@@ -12,3 +12,22 @@ for d in sorted(data['items'], key=lambda x: x['parameter'], reverse=True):
 
     f = open('checkpoint.txt', 'w')
     print((f'{d["parameter"]}'), file=f)
+
+import logging
+import boto3
+from botocore.exceptions import ClientError
+
+def upload_file(file_name, bucket, object_name=None):
+
+    if object_name is None:
+        object_name = file_name
+
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.upload_file(file_name, bucket, object_name)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return True
+
+print(upload_file('C:\\Users\\Mervi\\PycharmProjects\\checkpoint2UUSI\\vko2\\tehtava1.py', 'mervi-checkpoint2', 'tehtava1.py'))
