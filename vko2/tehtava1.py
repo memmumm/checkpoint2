@@ -1,6 +1,8 @@
 from pprint import pprint
-
 import requests
+import logging
+import boto3
+from botocore.exceptions import ClientError
 
 response = requests.get("https://2ri98gd9i4.execute-api.us-east-1.amazonaws.com/dev/academy-checkpoint2-json")
 data = response.json()
@@ -10,12 +12,8 @@ print(data['items'][0]['parameter'])
 for d in sorted(data['items'], key=lambda x: x['parameter'], reverse=True):
     print(f'{d["parameter"]}')
 
-    f = open('checkpoint.txt', 'w')
+    f = open('checkpoint.txt', 'a')
     print((f'{d["parameter"]}'), file=f)
-
-import logging
-import boto3
-from botocore.exceptions import ClientError
 
 def upload_file(file_name, bucket, object_name=None):
 
